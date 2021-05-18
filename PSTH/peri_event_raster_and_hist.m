@@ -47,7 +47,17 @@ else  % if unit_num is a char string, like 'elec75_1'
     if length(k) == 0
         error('Cannot find the unit with the given label in this file.');
     else
-        spikes = dataset.spikes{1, k};
+        if length(k)>1
+            for j = 1:length(dataset.unit_names)
+               if strcmp(dataset.unit_names(j), unit_num)
+                   break;
+               end
+            end
+            k = j;
+            spikes = dataset.spikes{1, k};
+        else
+            spikes = dataset.spikes{1, k};
+        end
     end
 end
 

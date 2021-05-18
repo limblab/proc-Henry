@@ -2,11 +2,13 @@
 clc
 clear
 % Load the pre-Cypro file
-load('E:\data\Groot_WM\20210402\sorted\20210402_Groot_preCypro_WM_002-01.mat');
+%load('E:\data\Groot_WM\20210402\sorted\20210402_Groot_preCypro_WM_002-01.mat');
+load('E:\data\Groot_WM\20210402\20210402_Groot_preCypro_WM_002.mat');
 preCypro_xds = xds;
 clear xds
 % Load the post-Cypro file
-load('E:\data\Groot_WM\20210402\sorted\20210402_Groot_postCypro_WM001-01.mat');
+%load('E:\data\Groot_WM\20210402\sorted\20210402_Groot_postCypro_WM001-01.mat');
+load('E:\data\Groot_WM\20210402\20210402_Groot_postCypro_WM002.mat');
 postCypro_xds = xds;
 clear xds
 %% Second, print the target centers, in order to have an idea about what to specify later
@@ -22,16 +24,16 @@ postCypro_unit_names = postCypro_xds.unit_names;
 %% Fourth, do PSTH plots with the preCypro file
 % Set up params for the preCypro file
 params = struct( ...
-    'event','trial_gocue', ...
+    'event','trial_end', ...
     'condition_type','target_center_x', ...
     'condition', -4.5, ...
     'trial_num',11, ...
-    'before_event',0.2, ...
-    'after_event',1, ...
+    'before_event',1.5, ...
+    'after_event',0.2, ...
     'bin_size',0.05, ...
     'hist_plot_type', 'line');
 
-unit_name = 'elec62_1';
+unit_name = 'elec9';
 k = find_unit_in_xds(preCypro_xds, unit_name);
 if isempty(k) == 1
     disp('Cannot find the unit with the given unit_name.')
@@ -42,16 +44,16 @@ peri_event_raster_and_hist(preCypro_xds, params, unit_name, 100)
 %% Fifth, do PSTH plots with the postCypro file
 % Set up params for the postCypro file
 params = struct( ...
-    'event','trial_gocue', ...
+    'event','trial_end', ...
     'condition_type','target_center_x', ...
     'condition', -5, ...
     'trial_num',11, ...
-    'before_event',0.2, ...
-    'after_event',1, ...
+    'before_event',1.5, ...
+    'after_event',0.2, ...
     'bin_size',0.05, ...
     'hist_plot_type', 'line');
 
-unit_name = 'elec62_1';
+unit_name = 'elec9';
 k = find_unit_in_xds(postCypro_xds, unit_name);
 if isempty(k) == 1
     disp('Cannot find the unit with the given unit_name.')
@@ -86,6 +88,14 @@ k = find(temp == 1);
 if length(k) == 0
     error('Cannot find the unit with the given label in this file.');
 else
-    disp(k);
+   if length(k) > 1 
+      for j = 1:length(dataset.unit_names)
+          if strcmp(dataset.unit_names(j), unit_name)
+              break;
+          end
+      end
+      k = j;
+   end
+   disp(j);
 end
 end

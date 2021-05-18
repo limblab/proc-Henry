@@ -96,6 +96,6 @@ else
       end
       k = j;
    end
-   disp(j);
+   disp(k);
 end
 end
